@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My dictionary</title>
+</head>
+<body>
+<h1>Words List</h1>
+<table class="words_list">
+  <tr>
+    <th>Original Word</th>
+    <th>Translation</th>
+  </tr>
+  {% for word1, word2 in words %}
+  <tr>
+    <td>{{ word1 }}</td>
+    <td>{{ word2 }}</td>
+  </tr>
+  {% endfor %}
+</table>
+<br>
+<a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>
