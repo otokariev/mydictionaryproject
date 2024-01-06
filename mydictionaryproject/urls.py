@@ -19,8 +19,8 @@ from django.urls import path
 from mydictionaryapp.views import home, words_list, add_word
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', home, name='home'),
-    path('words_list/', words_list, name='words_list'),
-    path('add_word/', add_word, name='add_word'),
+    path('mydictionaryproject/admin/', admin.site.urls),
+    path('mydictionaryproject/', home, name='home'),
+    path('mydictionaryproject/words_list/', words_list, name='words_list'),
+    path('mydictionaryproject/add_word/', add_word, name='add_word'),
 ]
