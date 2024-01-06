@@ -18,9 +18,12 @@ from django.contrib import admin
 from django.urls import path
 from mydictionaryapp.views import home, words_list, add_word
 
+# Ваш проект/urls.py
+from django.contrib import admin
+from django.urls import path, include
+
 urlpatterns = [
-    path('mydictionaryproject/admin/', admin.site.urls),
-    path('mydictionaryproject/', home, name='home'),
-    path('mydictionaryproject/words_list/', words_list, name='words_list'),
-    path('mydictionaryproject/add_word/', add_word, name='add_word'),
+    path('admin/', admin.site.urls),
+    path('mydictionaryproject/', include('mydictionaryapp.urls')),  # Замените 'mydictionaryapp' на имя вашего приложения
 ]
+

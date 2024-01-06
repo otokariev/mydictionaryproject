@@ -1,17 +1,30 @@
-from django.shortcuts import render, redirect
-from .utils import add_to_file, read_from_file
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Word
+from .serializers import WordSerializer
 
+
+@api_view(['GET'])
 def home(request):
-    return render(request, 'mydictionaryapp/home.html')
+    data = {'message': 'Добро пожаловать в приложение словаря!'}
+    return Response(data)
 
+
+@api_view(['GET'])
 def words_list(request):
-    words = read_from_file()
-    return render(request, 'mydictionaryapp/words_list.html', {'words': words})
+    words = Word.objects.all()
+    serializer = WordSerializer(words, many=True)
+    return Response(serializer.data)
 
+
+@api_view(['POST'])
 def add_word(request):
     if request.method == 'POST':
-        word1 = request.POST.get('word1')
-        word2 = request.POST.get('word2')
-        add_to_file(word1, word2)
-        return redirect('home')
-    return render(request, 'mydictionaryapp/add_word.html')
+        serializer = WordSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({'message': 'Метод не разрешен'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
