@@ -6,12 +6,6 @@ from .serializers import WordSerializer
 
 
 @api_view(['GET'])
-def home(request):
-    data = {'message': 'Добро пожаловать в приложение словаря!'}
-    return Response(data)
-
-
-@api_view(['GET'])
 def words_list(request):
     words = Word.objects.all()
     serializer = WordSerializer(words, many=True)
@@ -28,3 +22,14 @@ def add_word(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({'message': 'Метод не разрешен'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+@api_view(['DELETE'])
+def delete_word(request, pk):
+    try:
+        word = Word.objects.get(pk=pk)
+    except Word.DoesNotExist:
+        return Response({'message': 'Слово не найдено'}, status=status.HTTP_404_NOT_FOUND)
+
+    word.delete()
+    return Response({'message': 'Слово успешно удалено'}, status=status.HTTP_204_NO_CONTENT)
