@@ -1,28 +1,25 @@
 from rest_framework import serializers
-from .models import Word  # HashKey
+from .models import Word, Vocabulary
 from django.contrib.auth.models import User
 
 
-# class HashKeySerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = HashKey
-#         fields = ['hash_key']
-
-
 class WordSerializer(serializers.ModelSerializer):
-    # word_hash = HashKeySerializer(source='hashkey', read_only=True)
 
     class Meta:
         model = Word
-        fields = ['pk', 'word', 'translate']  # 'word_hash'
-        # extra_kwargs = {
-        #     'word_hash': {'write_only': True}
-        # }
+        fields = ['pk', 'word', 'translate', 'vocabulary']
 
     def validate_word(self, value):
         if Word.objects.filter(word__iexact=value).exists():
             raise serializers.ValidationError("This word already exists.")
         return value
+
+
+class VocabularySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Vocabulary
+        fields = ['pk', 'table_name']
 
 
 class UserSerializer(serializers.ModelSerializer):
