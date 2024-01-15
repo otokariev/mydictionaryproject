@@ -3,12 +3,15 @@ from .models import Word
 
 
 class WordSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Word
         fields = ['pk', 'word', 'translate']
+        extra_kwargs = {
+            'word': {'validators': []},
+        }
 
-    def validate_word(self, value):
-        if Word.objects.filter(word__iexact=value).exists():
-            raise serializers.ValidationError("This word already exists.")
-        return value
+    def create(self, validated_data):
+        word = validated_data['word']
+
+        if Word.objects.filter(word=word).exists():
+            raise serializers.ValidationError({'word': 'This word is already exist.'})
