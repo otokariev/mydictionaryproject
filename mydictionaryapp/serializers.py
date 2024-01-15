@@ -13,5 +13,8 @@ class WordSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         word = validated_data['word']
 
-        if Word.objects.filter(word=word).exists():
+        if Word.objects.filter(word__iexact=word).exists():
             raise serializers.ValidationError({'word': 'This word is already exist.'})
+
+        word_instance = Word.objects.create(word=word, translate=validated_data['translate'])
+        return word_instance
