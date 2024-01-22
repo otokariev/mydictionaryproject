@@ -10,6 +10,18 @@ class WordSerializer(serializers.ModelSerializer):
             'word': {'validators': []},
         }
 
+    def validate(self, data):
+        word = data['word']
+        translate = data['translate']
+
+        if not word.isalpha():
+            raise serializers.ValidationError({'word': 'Введи слово без цифр и символов.'})
+
+        if not translate.isalpha():
+            raise serializers.ValidationError({'translate': 'Введи слово без цифр и символов.'})
+
+        return data
+
     def create(self, validated_data):
         word = validated_data['word']
 
