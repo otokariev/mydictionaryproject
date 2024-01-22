@@ -15,10 +15,10 @@ class WordSerializer(serializers.ModelSerializer):
         translate = data['translate']
 
         if not word.isalpha():
-            raise serializers.ValidationError({'word': 'Введи слово без цифр и символов.'})
+            raise serializers.ValidationError({'word': 'Enter a word without numbers or symbols.'})
 
         if not translate.isalpha():
-            raise serializers.ValidationError({'translate': 'Введи слово без цифр и символов.'})
+            raise serializers.ValidationError({'translate': 'Enter a word without numbers or symbols.'})
 
         return data
 
